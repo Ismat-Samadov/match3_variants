@@ -83,7 +83,7 @@ export default function Home() {
             <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs font-bold mb-2" htmlFor="phone">
               Telefon
             </label>
-            <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="phone" type="tel" placeholder="+994 XX XXX XX XX" value={formData.phone} onChange={handleChange} required />
+            <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="phone" type="tel" placeholder="+994 50 555 55 55" value={formData.phone} onChange={handleChange} required />
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
