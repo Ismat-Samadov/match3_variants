@@ -99,7 +99,7 @@ export default function Home() {
             <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs font-bold mb-2" htmlFor="placeToWork">
               İş yeri
             </label>
-            <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="placeToWork" type="text" placeholder="Xəritədən seçin" value={formData.placeToWork} readOnly required />
+            <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="placeToWork" type="text" placeholder="İşləmək istədiyiniz marketi seçin" value={formData.placeToWork} readOnly required />
             <button type="button" onClick={() => setShowMap(!showMap)} className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 shadow-md">
               {showMap ? '✕ Xəritəni Gizlət' : '📍 Xəritədən Seç'}
             </button>
