@@ -55,6 +55,9 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null)
   const [mapCenter, setMapCenter] = useState<[number, number]>([40.3777, 49.8924])
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  const [gettingLocation, setGettingLocation] = useState(false)
+  const [locationError, setLocationError] = useState<string | null>(null)
 
   // Set the default Leaflet icon URLs once (client-side)
   L.Icon.Default.mergeOptions({
@@ -88,6 +91,59 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
     onLocationSelect(locationName)
   }
 
+  const getUserLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by your browser')
+      return
+    }
+
+    setGettingLocation(true)
+    setLocationError(null)
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        const userPos: [number, number] = [latitude, longitude]
+        setUserLocation(userPos)
+        setMapCenter(userPos)
+        setGettingLocation(false)
+      },
+      (error) => {
+        setGettingLocation(false)
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            setLocationError('Location access denied. Please enable location permissions.')
+            break
+          case error.POSITION_UNAVAILABLE:
+            setLocationError('Location information unavailable.')
+            break
+          case error.TIMEOUT:
+            setLocationError('Location request timed out.')
+            break
+          default:
+            setLocationError('An error occurred while getting your location.')
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    )
+  }
+
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371 // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180
+    const dLon = (lon2 - lon1) * Math.PI / 180
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    return R * c
+  }
+
   if (loading) {
     return (
       <div className="rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
@@ -119,13 +175,55 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
       {/* Location List */}
       <div className="lg:col-span-1 order-2 lg:order-1">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 max-h-[500px] overflow-y-auto">
-          <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
-            <span className="text-2xl">📍</span>
-            Available Locations
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+              <span className="text-2xl">📍</span>
+              Available Locations
+            </h3>
+          </div>
+
+          {/* Find My Location Button */}
+          <button
+            type="button"
+            onClick={getUserLocation}
+            disabled={gettingLocation}
+            className="w-full mb-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-md flex items-center justify-center gap-2"
+          >
+            {gettingLocation ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                <span>Finding you...</span>
+              </>
+            ) : (
+              <>
+                <span className="text-xl">🧭</span>
+                <span>Find My Location</span>
+              </>
+            )}
+          </button>
+
+          {locationError && (
+            <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/30 border border-orange-300 dark:border-orange-700 rounded-lg text-orange-700 dark:text-orange-300 text-sm">
+              {locationError}
+            </div>
+          )}
+
+          {userLocation && (
+            <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-400 dark:border-blue-600 rounded-lg animate-fadeIn">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 text-sm font-medium">
+                <span>📍</span>
+                <span>Your location marked on map</span>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-2">
-            {locations.map((location, index) =>
-              location.latitude && location.longitude ? (
+            {locations.map((location, index) => {
+              const distance = userLocation && location.latitude && location.longitude
+                ? calculateDistance(userLocation[0], userLocation[1], location.latitude, location.longitude)
+                : null
+
+              return location.latitude && location.longitude ? (
                 <button
                   key={index}
                   type="button"
@@ -144,7 +242,13 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
                     <div className="flex-1">
                       <div className="font-semibold text-gray-800 dark:text-gray-200">{location.name}</div>
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Click to view on map
+                        {distance !== null ? (
+                          <span className="font-medium text-blue-600 dark:text-blue-400">
+                            📏 {distance < 1 ? `${(distance * 1000).toFixed(0)}m` : `${distance.toFixed(1)}km`} away
+                          </span>
+                        ) : (
+                          'Click to view on map'
+                        )}
                       </div>
                     </div>
                     {selectedLocation === location.name && (
@@ -153,7 +257,7 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
                   </div>
                 </button>
               ) : null
-            )}
+            })}
           </div>
         </div>
       </div>
@@ -172,6 +276,39 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
+
+            {/* User Location Marker */}
+            {userLocation && (
+              <Marker
+                position={userLocation}
+                icon={L.divIcon({
+                  className: 'user-location-marker',
+                  html: `
+                    <div class="relative animate-pulse">
+                      <div class="absolute -translate-x-1/2 -translate-y-1/2">
+                        <div class="relative">
+                          <div class="absolute w-8 h-8 bg-blue-400 rounded-full opacity-30 animate-ping"></div>
+                          <div class="relative w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                  iconSize: [32, 32],
+                  iconAnchor: [16, 16],
+                })}
+              >
+                <Popup>
+                  <div className="p-2 text-center">
+                    <div className="font-bold text-blue-600 mb-1">📍 You are here</div>
+                    <div className="text-xs text-gray-600">Your current location</div>
+                  </div>
+                </Popup>
+              </Marker>
+            )}
+
+            {/* Location Markers */}
             {locations.map((location, index) =>
               location.latitude && location.longitude ? (
                 <Marker
@@ -185,7 +322,15 @@ export default function MapSelector({ onLocationSelect }: MapSelectorProps) {
                 >
                   <Popup>
                     <div className="p-2 min-w-[200px]">
-                      <div className="font-bold text-lg mb-3 text-gray-800">{location.name}</div>
+                      <div className="font-bold text-lg mb-2 text-gray-800">{location.name}</div>
+                      {userLocation && (
+                        <div className="text-xs text-blue-600 mb-3 font-medium">
+                          📏 {(() => {
+                            const dist = calculateDistance(userLocation[0], userLocation[1], location.latitude!, location.longitude!)
+                            return dist < 1 ? `${(dist * 1000).toFixed(0)}m` : `${dist.toFixed(1)}km`
+                          })()} from you
+                        </div>
+                      )}
                       <button
                         type="button"
                         onClick={() => handleLocationClick(location.name ?? '', location.latitude!, location.longitude!)}
