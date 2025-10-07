@@ -23,6 +23,7 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterLocation, setFilterLocation] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [activeTab, setActiveTab] = useState<'applications' | 'analytics'>('applications')
   const itemsPerPage = 5
 
   useEffect(() => {
@@ -155,33 +156,225 @@ export default function AdminPage() {
         {/* Header */}
         <div className="mb-8 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
-                  İdarəetmə Paneli
-                </h1>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Ümumi Müraciətlər: <span className="font-bold text-emerald-600">{applications.length}</span>
-                  {filteredApplications.length !== applications.length && (
-                    <span className="ml-2 text-sm">
-                      (Göstərilir {filteredApplications.length})
-                    </span>
-                  )}
-                </p>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+                    İdarəetmə Paneli
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Ümumi Müraciətlər: <span className="font-bold text-emerald-600">{applications.length}</span>
+                    {filteredApplications.length !== applications.length && (
+                      <span className="ml-2 text-sm">
+                        (Göstərilir {filteredApplications.length})
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <button
+                  onClick={exportToExcel}
+                  disabled={filteredApplications.length === 0}
+                  className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-lg flex items-center justify-center gap-2"
+                >
+                  <span className="text-xl">📊</span>
+                  <span>Excel-ə Köçür</span>
+                </button>
               </div>
-              <button
-                onClick={exportToExcel}
-                disabled={filteredApplications.length === 0}
-                className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-lg flex items-center justify-center gap-2"
-              >
-                <span className="text-xl">📊</span>
-                <span>Excel-ə Köçür</span>
-              </button>
+
+              {/* Tabs */}
+              <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => setActiveTab('applications')}
+                  className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+                    activeTab === 'applications'
+                      ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                      : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-emerald-500'
+                  }`}
+                >
+                  📋 Müraciətlər
+                </button>
+                <button
+                  onClick={() => setActiveTab('analytics')}
+                  className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+                    activeTab === 'analytics'
+                      ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                      : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-emerald-500'
+                  }`}
+                >
+                  📈 Analitika
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Analytics Tab */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Top Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <span className="text-2xl">👥</span>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Ümumi Müraciətlər</div>
+                </div>
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{applications.length}</div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                    <span className="text-2xl">💰</span>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Orta Maaş</div>
+                </div>
+                <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                  {Math.round(applications.reduce((sum, app) => sum + app.expected_salary, 0) / applications.length || 0)} AZN
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                    <span className="text-2xl">🏢</span>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Unikal Məkanlar</div>
+                </div>
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                  {new Set(applications.map(app => app.place_to_work)).size}
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                    <span className="text-2xl">💼</span>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Vəzifə Növləri</div>
+                </div>
+                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                  {new Set(applications.map(app => app.job_title)).size}
+                </div>
+              </div>
+            </div>
+
+            {/* Job Titles Distribution */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                <span>💼</span>
+                Vəzifələrə görə Bölgü
+              </h3>
+              <div className="space-y-3">
+                {Object.entries(
+                  applications.reduce((acc, app) => {
+                    acc[app.job_title] = (acc[app.job_title] || 0) + 1
+                    return acc
+                  }, {} as Record<string, number>)
+                )
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([title, count]) => {
+                    const percentage = (count / applications.length) * 100
+                    return (
+                      <div key={title}>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</span>
+                          <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                            {count} ({percentage.toFixed(1)}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                          <div
+                            className="bg-gradient-to-r from-emerald-500 to-teal-600 h-2.5 rounded-full transition-all duration-500"
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+
+            {/* Location Distribution */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                <span>📍</span>
+                Məkanlara görə Bölgü (Top 10)
+              </h3>
+              <div className="space-y-3">
+                {Object.entries(
+                  applications.reduce((acc, app) => {
+                    acc[app.place_to_work] = (acc[app.place_to_work] || 0) + 1
+                    return acc
+                  }, {} as Record<string, number>)
+                )
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 10)
+                  .map(([location, count]) => {
+                    const percentage = (count / applications.length) * 100
+                    return (
+                      <div key={location}>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{location}</span>
+                          <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                            {count} ({percentage.toFixed(1)}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                          <div
+                            className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+
+            {/* Salary Range Distribution */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                <span>💵</span>
+                Maaş Aralığı Bölgüsü
+              </h3>
+              <div className="space-y-3">
+                {(() => {
+                  const ranges = {
+                    '500-700 AZN': applications.filter(app => app.expected_salary >= 500 && app.expected_salary < 700).length,
+                    '700-900 AZN': applications.filter(app => app.expected_salary >= 700 && app.expected_salary < 900).length,
+                    '900-1100 AZN': applications.filter(app => app.expected_salary >= 900 && app.expected_salary < 1100).length,
+                    '1100+ AZN': applications.filter(app => app.expected_salary >= 1100).length,
+                  }
+                  return Object.entries(ranges).map(([range, count]) => {
+                    const percentage = (count / applications.length) * 100
+                    return (
+                      <div key={range}>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{range}</span>
+                          <span className="text-sm font-semibold text-teal-600 dark:text-teal-400">
+                            {count} ({percentage.toFixed(1)}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                          <div
+                            className="bg-gradient-to-r from-teal-500 to-cyan-600 h-2.5 rounded-full transition-all duration-500"
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Filters */}
+        {activeTab === 'applications' && (
+        <>
         <div className="mb-6 animate-slideUp">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -368,6 +561,8 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
+        )}
+        </>
         )}
       </div>
     </div>
