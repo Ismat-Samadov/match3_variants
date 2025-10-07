@@ -22,6 +22,8 @@ export default function AdminPage() {
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterLocation, setFilterLocation] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   useEffect(() => {
     fetchApplications()
@@ -102,6 +104,17 @@ export default function AdminPage() {
   const uniqueLocations = Array.from(
     new Set(applications.map((app) => app.place_to_work))
   ).sort()
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredApplications.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentApplications = filteredApplications.slice(startIndex, endIndex)
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, filterLocation])
 
   if (loading) {
     return (
@@ -223,65 +236,99 @@ export default function AdminPage() {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
-                  <tr>
-                    <th className="py-4 px-4 text-left font-bold">ID</th>
-                    <th className="py-4 px-4 text-left font-bold">Name</th>
-                    <th className="py-4 px-4 text-left font-bold">Phone</th>
-                    <th className="py-4 px-4 text-left font-bold">Location</th>
-                    <th className="py-4 px-4 text-left font-bold">Work Location</th>
-                    <th className="py-4 px-4 text-left font-bold">Job Title</th>
-                    <th className="py-4 px-4 text-left font-bold">Salary</th>
-                    <th className="py-4 px-4 text-left font-bold">Applied</th>
-                    <th className="py-4 px-4 text-left font-bold">Info</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {filteredApplications.map((app, index) => (
-                    <tr
-                      key={app.id}
-                      className={`hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors duration-200 ${
-                        index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : ''
-                      }`}
-                    >
-                      <td className="py-4 px-4 font-semibold text-gray-900 dark:text-gray-100">
-                        #{app.id}
-                      </td>
-                      <td className="py-4 px-4 text-gray-800 dark:text-gray-200">
-                        <div className="font-semibold">{app.name} {app.surname}</div>
-                      </td>
-                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
-                        {app.phone}
-                      </td>
-                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
-                        {app.current_living_place}
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
-                          {app.place_to_work}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
-                        {app.job_title}
-                      </td>
-                      <td className="py-4 px-4 font-semibold text-emerald-600 dark:text-emerald-400">
-                        {app.expected_salary} AZN
-                      </td>
-                      <td className="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">
-                        {new Date(app.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300 max-w-xs">
-                        <div className="truncate" title={app.info || 'N/A'}>
-                          {app.info || '-'}
-                        </div>
-                      </td>
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
+                    <tr>
+                      <th className="py-4 px-6 text-left font-bold text-base">Name</th>
+                      <th className="py-4 px-6 text-left font-bold text-base">Phone</th>
+                      <th className="py-4 px-6 text-left font-bold text-base">Location</th>
+                      <th className="py-4 px-6 text-left font-bold text-base">Work Location</th>
+                      <th className="py-4 px-6 text-left font-bold text-base">Job Title</th>
+                      <th className="py-4 px-6 text-left font-bold text-base">Salary</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {currentApplications.map((app, index) => (
+                      <tr
+                        key={app.id}
+                        className={`hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors duration-200 ${
+                          index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : ''
+                        }`}
+                      >
+                        <td className="py-5 px-6 text-gray-800 dark:text-gray-200">
+                          <div className="font-semibold text-base">{app.name} {app.surname}</div>
+                        </td>
+                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300 font-medium">
+                          {app.phone}
+                        </td>
+                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300">
+                          {app.current_living_place}
+                        </td>
+                        <td className="py-5 px-6">
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                            {app.place_to_work}
+                          </span>
+                        </td>
+                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300 font-medium">
+                          {app.job_title}
+                        </td>
+                        <td className="py-5 px-6 font-bold text-emerald-600 dark:text-emerald-400 text-base">
+                          {app.expected_salary} AZN
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Showing <span className="font-semibold text-gray-900 dark:text-gray-100">{startIndex + 1}</span> to{' '}
+                      <span className="font-semibold text-gray-900 dark:text-gray-100">
+                        {Math.min(endIndex, filteredApplications.length)}
+                      </span>{' '}
+                      of <span className="font-semibold text-gray-900 dark:text-gray-100">{filteredApplications.length}</span> applications
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        ← Previous
+                      </button>
+                      <div className="flex gap-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                              currentPage === page
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md'
+                                : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        Next →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
 
