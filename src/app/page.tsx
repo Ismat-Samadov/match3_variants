@@ -31,16 +31,29 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const response = await fetch('/api/apply', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-    const data = await response.json()
-    console.log(data)
-    alert('Application submitted successfully!')
+    try {
+      const response = await fetch('/api/apply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      const data = await response.json()
+      console.log(data)
+
+      if (response.ok) {
+        // Show success message briefly before redirect
+        alert('Application submitted successfully! Redirecting...')
+        // Redirect to oba.az
+        window.location.href = 'https://oba.az/'
+      } else {
+        alert('Failed to submit application. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error)
+      alert('An error occurred. Please try again.')
+    }
   }
 
   return (
