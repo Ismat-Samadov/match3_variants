@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react'
 import L from 'leaflet'
 
 // Fix for default icon issue with webpack
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png?url';
+import iconUrl from 'leaflet/dist/images/marker-icon.png?url';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png?url';
 
 const DefaultIcon = L.icon({
     iconRetinaUrl,
