@@ -265,21 +265,21 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-3 sm:p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8 animate-fadeIn">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="mb-4 sm:mb-6 md:mb-8 animate-fadeIn">
+          <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 border border-gray-100 dark:border-gray-700">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-1 sm:mb-2">
                     İdarəetmə Paneli
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                     Ümumi Müraciətlər: <span className="font-bold text-emerald-600">{applications.length}</span>
                     {filteredApplications.length !== applications.length && (
-                      <span className="ml-2 text-sm">
+                      <span className="ml-2 text-xs sm:text-sm">
                         (Göstərilir {filteredApplications.length})
                       </span>
                     )}
@@ -289,26 +289,27 @@ export default function AdminPage() {
                   <button
                     onClick={exportToExcel}
                     disabled={filteredApplications.length === 0}
-                    className="flex-1 sm:flex-none bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 shadow-lg flex items-center justify-center gap-2"
+                    className="flex-1 sm:flex-none bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-2 sm:py-3 px-3 sm:px-6 text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-300 transform active:scale-95 sm:hover:scale-105 disabled:scale-100 shadow-lg flex items-center justify-center gap-2"
                   >
-                    <span className="text-xl">📊</span>
-                    <span>Excel-ə Köçür</span>
+                    <span className="text-lg sm:text-xl">📊</span>
+                    <span className="hidden xs:inline">Excel-ə Köçür</span>
+                    <span className="xs:hidden">Excel</span>
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 sm:py-3 px-3 sm:px-4 text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-300 transform active:scale-95 sm:hover:scale-105 shadow-lg whitespace-nowrap"
                     title="Çıxış"
                   >
-                    🚪 Çıxış
+                    🚪 <span className="hidden xs:inline">Çıxış</span>
                   </button>
                 </div>
               </div>
 
               {/* Tabs */}
-              <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex gap-1 sm:gap-2 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
                 <button
                   onClick={() => setActiveTab('applications')}
-                  className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-200 border-b-2 whitespace-nowrap ${
                     activeTab === 'applications'
                       ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
                       : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-emerald-500'
@@ -318,7 +319,7 @@ export default function AdminPage() {
                 </button>
                 <button
                   onClick={() => setActiveTab('analytics')}
-                  className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+                  className={`px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-200 border-b-2 whitespace-nowrap ${
                     activeTab === 'analytics'
                       ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
                       : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-emerald-500'
@@ -333,59 +334,59 @@ export default function AdminPage() {
 
         {/* Analytics Tab */}
         {activeTab === 'analytics' && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-4 sm:space-y-6 animate-fadeIn">
             {/* Top Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                    <span className="text-2xl">👥</span>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-4 md:p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                  <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg w-fit">
+                    <span className="text-xl sm:text-2xl">👥</span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Ümumi Müraciətlər</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Ümumi Müraciətlər</div>
                 </div>
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{applications.length}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">{applications.length}</div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                    <span className="text-2xl">💰</span>
+              <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-4 md:p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                  <div className="p-1.5 sm:p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg w-fit">
+                    <span className="text-xl sm:text-2xl">💰</span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Orta Maaş</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Orta Maaş</div>
                 </div>
-                <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {Math.round(applications.reduce((sum, app) => sum + app.expected_salary, 0) / applications.length || 0)} AZN
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                  {Math.round(applications.reduce((sum, app) => sum + app.expected_salary, 0) / applications.length || 0)} <span className="text-base sm:text-xl">AZN</span>
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                    <span className="text-2xl">🏢</span>
+              <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-4 md:p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                  <div className="p-1.5 sm:p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg w-fit">
+                    <span className="text-xl sm:text-2xl">🏢</span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Unikal Məkanlar</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Unikal Məkanlar</div>
                 </div>
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400">
                   {new Set(applications.map(app => app.place_to_work)).size}
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                    <span className="text-2xl">💼</span>
+              <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-4 md:p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                  <div className="p-1.5 sm:p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg w-fit">
+                    <span className="text-xl sm:text-2xl">💼</span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Vəzifə Növləri</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Vəzifə Növləri</div>
                 </div>
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                <div className="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400">
                   {new Set(applications.map(app => app.job_title)).size}
                 </div>
               </div>
             </div>
 
             {/* Job Titles Distribution */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4 flex items-center gap-2">
                 <span>💼</span>
                 Vəzifələrə görə Bölgü
               </h3>
@@ -420,10 +421,11 @@ export default function AdminPage() {
             </div>
 
             {/* Location Distribution */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4 flex items-center gap-2">
                 <span>📍</span>
-                Məkanlara görə Bölgü (Top 10)
+                <span className="hidden sm:inline">Məkanlara görə Bölgü (Top 10)</span>
+                <span className="sm:hidden">Məkanlar (Top 10)</span>
               </h3>
               <div className="space-y-3">
                 {Object.entries(
@@ -457,8 +459,8 @@ export default function AdminPage() {
             </div>
 
             {/* Salary Range Distribution */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4 flex items-center gap-2">
                 <span>💵</span>
                 Maaş Aralığı Bölgüsü
               </h3>
@@ -538,14 +540,14 @@ export default function AdminPage() {
         </div>
 
         {/* Applications Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden animate-slideUp">
+        <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden animate-slideUp">
           {filteredApplications.length === 0 ? (
-            <div className="text-center py-16 px-4">
-              <div className="text-6xl mb-4">📭</div>
-              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <div className="text-center py-12 sm:py-16 px-4">
+              <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📭</div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Müraciət Tapılmadı
               </h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                 {applications.length === 0
                   ? 'Hələ heç bir müraciət edilməyib.'
                   : 'Axtarış və ya filter kriteriyalarını dəyişdirməyi cəhd edin.'}
@@ -554,15 +556,15 @@ export default function AdminPage() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[800px]">
                   <thead className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
                     <tr>
-                      <th className="py-4 px-6 text-left font-bold text-base">Ad Soyad</th>
-                      <th className="py-4 px-6 text-left font-bold text-base">Telefon</th>
-                      <th className="py-4 px-6 text-left font-bold text-base">Yaşayış Yeri</th>
-                      <th className="py-4 px-6 text-left font-bold text-base">İş Yeri</th>
-                      <th className="py-4 px-6 text-left font-bold text-base">Vəzifə</th>
-                      <th className="py-4 px-6 text-left font-bold text-base">Maaş</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Ad Soyad</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Telefon</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Yaşayış Yeri</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">İş Yeri</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Vəzifə</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Maaş</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -573,24 +575,24 @@ export default function AdminPage() {
                           index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : ''
                         }`}
                       >
-                        <td className="py-5 px-6 text-gray-800 dark:text-gray-200">
-                          <div className="font-semibold text-base">{app.name} {app.surname}</div>
+                        <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-800 dark:text-gray-200">
+                          <div className="font-semibold text-sm sm:text-base whitespace-nowrap">{app.name} {app.surname}</div>
                         </td>
-                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300 font-medium">
+                        <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base whitespace-nowrap">
                           {app.phone}
                         </td>
-                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300">
-                          {app.current_living_place}
+                        <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+                          <div className="max-w-[150px] truncate">{app.current_living_place}</div>
                         </td>
-                        <td className="py-5 px-6">
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                        <td className="py-3 sm:py-5 px-3 sm:px-6">
+                          <span className="inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 whitespace-nowrap">
                             {app.place_to_work}
                           </span>
                         </td>
-                        <td className="py-5 px-6 text-gray-700 dark:text-gray-300 font-medium">
-                          {app.job_title}
+                        <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+                          <div className="max-w-[120px] truncate">{app.job_title}</div>
                         </td>
-                        <td className="py-5 px-6 font-bold text-emerald-600 dark:text-emerald-400 text-base">
+                        <td className="py-3 sm:py-5 px-3 sm:px-6 font-bold text-emerald-600 dark:text-emerald-400 text-sm sm:text-base whitespace-nowrap">
                           {app.expected_salary} AZN
                         </td>
                       </tr>
