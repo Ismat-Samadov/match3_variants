@@ -37,7 +37,13 @@ export default function Home() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch('/api/jobs?active=true')
+      const response = await fetch('/api/jobs?active=true', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        cache: 'no-store',
+      })
       const data = await response.json()
       setJobs(data)
     } catch (error) {
