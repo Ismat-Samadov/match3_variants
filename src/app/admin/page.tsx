@@ -5,15 +5,21 @@ import * as XLSX from 'xlsx'
 
 interface Application {
   id: number
+  job_id: number | null
   name: string
   surname: string
   phone: string
+  email: string | null
   current_living_place: string
   place_to_work: string
   job_title: string
   expected_salary: number
+  cv_url: string | null
   info: string | null
   created_at: string
+  job?: {
+    title: string
+  }
 }
 
 export default function AdminPage() {
@@ -101,10 +107,13 @@ export default function AdminPage() {
       Ad: app.name,
       Soyad: app.surname,
       Telefon: app.phone,
+      Email: app.email || '',
       'Hazırki yaşayış yeri': app.current_living_place,
       'İş yeri': app.place_to_work,
+      'Vakansiya': app.job?.title || 'Ümumi',
       'Vəzifə': app.job_title,
       'Gözlənilən maaş (AZN)': app.expected_salary,
+      'CV URL': app.cv_url || '',
       'Əlavə məlumat': app.info || '',
       'Müraciət tarixi': new Date(app.created_at).toLocaleString(),
     }))
@@ -118,10 +127,13 @@ export default function AdminPage() {
       { wch: 15 }, // Name
       { wch: 15 }, // Surname
       { wch: 15 }, // Phone
+      { wch: 25 }, // Email
       { wch: 20 }, // Current Living Place
       { wch: 20 }, // Preferred Work Location
+      { wch: 20 }, // Job Posting
       { wch: 15 }, // Job Title
       { wch: 12 }, // Expected Salary
+      { wch: 50 }, // CV URL
       { wch: 30 }, // Additional Info
       { wch: 20 }, // Applied Date
     ]
@@ -326,6 +338,12 @@ export default function AdminPage() {
                   }`}
                 >
                   📈 Analitika
+                </button>
+                <button
+                  onClick={() => window.location.href = '/admin/jobs'}
+                  className="px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold transition-all duration-200 border-b-2 border-transparent text-gray-600 dark:text-gray-400 hover:text-emerald-500 whitespace-nowrap"
+                >
+                  💼 Vakansiyalar
                 </button>
               </div>
             </div>
@@ -556,15 +574,16 @@ export default function AdminPage() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[800px]">
+                <table className="w-full min-w-[1000px]">
                   <thead className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
                     <tr>
                       <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Ad Soyad</th>
                       <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Telefon</th>
-                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Yaşayış Yeri</th>
-                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">İş Yeri</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Email</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Vakansiya</th>
                       <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Vəzifə</th>
                       <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">Maaş</th>
+                      <th className="py-3 sm:py-4 px-3 sm:px-6 text-left font-bold text-sm sm:text-base whitespace-nowrap">CV</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -577,23 +596,45 @@ export default function AdminPage() {
                       >
                         <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-800 dark:text-gray-200">
                           <div className="font-semibold text-sm sm:text-base whitespace-nowrap">{app.name} {app.surname}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{app.current_living_place}</div>
                         </td>
                         <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base whitespace-nowrap">
                           {app.phone}
                         </td>
                         <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
-                          <div className="max-w-[150px] truncate">{app.current_living_place}</div>
+                          {app.email || '-'}
+                        </td>
+                        <td className="py-3 sm:py-5 px-3 sm:px-6">
+                          {app.job?.title ? (
+                            <span className="inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 whitespace-nowrap">
+                              💼 {app.job.title}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-gray-500 dark:text-gray-400">Ümumi</span>
+                          )}
                         </td>
                         <td className="py-3 sm:py-5 px-3 sm:px-6">
                           <span className="inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 whitespace-nowrap">
-                            {app.place_to_work}
+                            {app.job_title}
                           </span>
-                        </td>
-                        <td className="py-3 sm:py-5 px-3 sm:px-6 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
-                          <div className="max-w-[120px] truncate">{app.job_title}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{app.place_to_work}</div>
                         </td>
                         <td className="py-3 sm:py-5 px-3 sm:px-6 font-bold text-emerald-600 dark:text-emerald-400 text-sm sm:text-base whitespace-nowrap">
                           {app.expected_salary} AZN
+                        </td>
+                        <td className="py-3 sm:py-5 px-3 sm:px-6">
+                          {app.cv_url ? (
+                            <a
+                              href={app.cv_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-all duration-200"
+                            >
+                              📄 Yüklə
+                            </a>
+                          ) : (
+                            <span className="text-xs text-gray-400">-</span>
+                          )}
                         </td>
                       </tr>
                     ))}

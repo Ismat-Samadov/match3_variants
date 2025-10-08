@@ -9,6 +9,13 @@ export async function GET() {
       orderBy: {
         created_at: 'desc',
       },
+      include: {
+        job: {
+          select: {
+            title: true,
+          },
+        },
+      },
     })
     return NextResponse.json(applications)
   } catch (error) {

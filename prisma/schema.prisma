@@ -17,15 +17,39 @@ model locations {
   
 }
 
+model jobs {
+  id                Int      @id @default(autoincrement())
+  title             String
+  description       String   @db.Text
+  location          String
+  salary_min        Int?
+  salary_max        Int?
+  employment_type   String   @default("full_time")
+  requirements      String?  @db.Text
+  responsibilities  String?  @db.Text
+  status            String   @default("active")
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  applications      job_applications[]
+}
+
 model job_applications {
   id                   Int      @id @default(autoincrement())
+  job_id               Int?
   name                 String
   surname              String
   phone                String
+  email                String?
   current_living_place String
   place_to_work        String
   job_title            String
   expected_salary      Int
+  cv_url               String?
   info                 String?
   created_at           DateTime @default(now())
+
+  job                  jobs?    @relation(fields: [job_id], references: [id], onDelete: SetNull)
+
+  @@index([job_id])
 }
