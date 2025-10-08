@@ -527,8 +527,8 @@ export default function AdminPage() {
         ) : (
           /* Analytics Tab */
           <div className="space-y-6">
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
@@ -589,9 +589,271 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Bu Həftə</div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {applications.filter(app => {
+                        const appDate = new Date(app.created_at)
+                        const weekAgo = new Date()
+                        weekAgo.setDate(weekAgo.getDate() - 7)
+                        return appDate >= weekAgo
+                      }).length}
+                    </div>
+                    <div className="text-xs text-green-600 mt-1 font-medium">
+                      +{applications.filter(app => {
+                        const appDate = new Date(app.created_at)
+                        const weekAgo = new Date()
+                        weekAgo.setDate(weekAgo.getDate() - 7)
+                        return appDate >= weekAgo
+                      }).length > 0 ? ((applications.filter(app => {
+                        const appDate = new Date(app.created_at)
+                        const weekAgo = new Date()
+                        weekAgo.setDate(weekAgo.getDate() - 7)
+                        return appDate >= weekAgo
+                      }).length / applications.length) * 100).toFixed(0) : 0}%
+                    </div>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Charts */}
+            {/* Salary Insights */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+                    <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-700">Ən Yüksək Gözlənti</h3>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">
+                  {Math.max(...applications.map(app => app.expected_salary))}
+                  <span className="text-lg text-gray-600 ml-1">AZN</span>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-700">Ən Aşağı Gözlənti</h3>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">
+                  {Math.min(...applications.map(app => app.expected_salary))}
+                  <span className="text-lg text-gray-600 ml-1">AZN</span>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+                    <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-700">Median Maaş</h3>
+                </div>
+                <div className="text-3xl font-bold text-gray-900">
+                  {(() => {
+                    const sorted = [...applications].sort((a, b) => a.expected_salary - b.expected_salary)
+                    const mid = Math.floor(sorted.length / 2)
+                    return sorted.length % 2 === 0
+                      ? Math.round((sorted[mid - 1].expected_salary + sorted[mid].expected_salary) / 2)
+                      : sorted[mid].expected_salary
+                  })()}
+                  <span className="text-lg text-gray-600 ml-1">AZN</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Application Timeline */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Son 30 Gündə Müraciətlər</h3>
+                  <p className="text-sm text-gray-500">Günlük müraciət statistikası</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {(() => {
+                  const last30Days = Array.from({length: 30}, (_, i) => {
+                    const date = new Date()
+                    date.setDate(date.getDate() - (29 - i))
+                    return date.toISOString().split('T')[0]
+                  })
+                  const dailyCounts = last30Days.map(date => {
+                    return applications.filter(app => app.created_at.split('T')[0] === date).length
+                  })
+                  const maxCount = Math.max(...dailyCounts, 1)
+
+                  return last30Days.map((date, idx) => {
+                    const count = dailyCounts[idx]
+                    const percentage = (count / maxCount) * 100
+                    return (
+                      <div key={date} className="flex items-center gap-3">
+                        <div className="text-xs text-gray-500 w-20 flex-shrink-0">
+                          {new Date(date).toLocaleDateString('az-AZ', { month: 'short', day: 'numeric' })}
+                        </div>
+                        <div className="flex-1 flex items-center gap-2">
+                          <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
+                            <div
+                              className="bg-gradient-to-r from-orange-500 to-orange-600 h-6 rounded-full flex items-center justify-end pr-2 transition-all duration-300"
+                              style={{ width: `${percentage}%` }}
+                            >
+                              {count > 0 && <span className="text-xs font-medium text-white">{count}</span>}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
+              </div>
+            </div>
+
+            {/* Salary Distribution */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Maaş Bölgüsü</h3>
+                  <p className="text-sm text-gray-500">Gözlənilən maaş aralıqları</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {(() => {
+                  const ranges = [
+                    { label: '0-500 AZN', min: 0, max: 500, color: 'bg-red-500' },
+                    { label: '500-1000 AZN', min: 500, max: 1000, color: 'bg-orange-500' },
+                    { label: '1000-1500 AZN', min: 1000, max: 1500, color: 'bg-yellow-500' },
+                    { label: '1500-2000 AZN', min: 1500, max: 2000, color: 'bg-green-500' },
+                    { label: '2000+ AZN', min: 2000, max: Infinity, color: 'bg-blue-500' },
+                  ]
+                  return ranges.map(range => {
+                    const count = applications.filter(app =>
+                      app.expected_salary >= range.min && app.expected_salary < range.max
+                    ).length
+                    const percentage = (count / applications.length) * 100
+                    return (
+                      <div key={range.label}>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm text-gray-700 font-medium">{range.label}</span>
+                          <span className="text-sm font-semibold text-gray-900">
+                            {count} ({percentage.toFixed(1)}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div
+                            className={`${range.color} h-3 rounded-full transition-all duration-300`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
+              </div>
+            </div>
+
+            {/* Top Performers */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Ən Populyar Vəzifələr</h3>
+                    <p className="text-sm text-gray-500">Ən çox müraciət olunan</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {Object.entries(
+                    applications.reduce((acc, app) => {
+                      const title = app.job?.title || 'Ümumi'
+                      acc[title] = (acc[title] || 0) + 1
+                      return acc
+                    }, {} as Record<string, number>)
+                  )
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([title, count], idx) => {
+                      const percentage = (count / applications.length) * 100
+                      const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣']
+                      return (
+                        <div key={title} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                          <div className="text-2xl">{medals[idx]}</div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">{title}</div>
+                            <div className="text-sm text-gray-600">{count} müraciət • {percentage.toFixed(1)}%</div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Ən Populyar Məkanlar</h3>
+                    <p className="text-sm text-gray-500">Ən çox seçilən iş yerləri</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {Object.entries(
+                    applications.reduce((acc, app) => {
+                      acc[app.place_to_work] = (acc[app.place_to_work] || 0) + 1
+                      return acc
+                    }, {} as Record<string, number>)
+                  )
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([location, count], idx) => {
+                      const percentage = (count / applications.length) * 100
+                      const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣']
+                      return (
+                        <div key={location} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                          <div className="text-2xl">{medals[idx]}</div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">{location}</div>
+                            <div className="text-sm text-gray-600">{count} namizəd • {percentage.toFixed(1)}%</div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center gap-2 mb-6">
@@ -601,7 +863,7 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900">
-                    Vəzifələrə görə
+                    Vəzifələrə görə (Hamısı)
                   </h3>
                 </div>
                 <div className="space-y-3">
