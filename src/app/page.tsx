@@ -17,6 +17,13 @@ interface Job {
   responsibilities: string | null
 }
 
+interface Location {
+  id: number
+  name: string
+  latitude: number
+  longitude: number
+}
+
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [loading, setLoading] = useState(true)
@@ -32,43 +39,7 @@ export default function Home() {
     info: '',
   })
 
-  // Azerbaijan branch locations
-  const branchLocations = [
-    'Bakı',
-    'Sumqayıt',
-    'Gəncə',
-    'Mingəçevir',
-    'Şirvan',
-    'Naxçıvan',
-    'Lənkəran',
-    'Şəki',
-    'Yevlax',
-    'Ağdam',
-    'Füzuli',
-    'Qəbələ',
-    'Quba',
-    'Xaçmaz',
-    'Şamaxı',
-    'Salyan',
-    'Ağcabədi',
-    'Bərdə',
-    'Zaqatala',
-    'Qax',
-    'Balakən',
-    'Qusar',
-    'İsmayıllı',
-    'Ağsu',
-    'Göyçay',
-    'Ucar',
-    'Kürdəmir',
-    'Sabirabad',
-    'Biləsuvar',
-    'Cəlilabad',
-    'Masallı',
-    'Astara',
-    'Lerik',
-    'Yardımlı',
-  ]
+  const [branchLocations, setBranchLocations] = useState<string[]>([])
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -77,6 +48,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchJobs()
+    fetchLocations()
   }, [])
 
   useEffect(() => {
@@ -111,6 +83,21 @@ export default function Home() {
       console.error('Error fetching jobs:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchLocations = async () => {
+    try {
+      const response = await fetch('/api/locations')
+      const data: Location[] = await response.json()
+      // Extract unique location names and sort them alphabetically
+      const locationNames = data
+        .map((loc) => loc.name)
+        .filter((name) => name && name.trim() !== '')
+        .sort((a, b) => a.localeCompare(b, 'az'))
+      setBranchLocations(locationNames)
+    } catch (error) {
+      console.error('Error fetching locations:', error)
     }
   }
 
