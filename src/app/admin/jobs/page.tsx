@@ -167,7 +167,7 @@ export default function JobsManagementPage() {
                   {showForm ? '✕ Bağla' : '➕ Yeni Vakansiya'}
                 </button>
                 <button
-                  onClick={() => router.push('/admin')}
+                  onClick={() => window.location.href = '/admin'}
                   className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300"
                 >
                   ← Geri
