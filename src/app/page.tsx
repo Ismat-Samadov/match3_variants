@@ -157,230 +157,299 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start sm:justify-center p-3 sm:p-6 md:p-8 lg:p-12 bg-gradient-to-br from-blue-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="w-full max-w-4xl">
-        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fadeIn pt-4 sm:pt-0">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4 bg-gradient-to-r from-blue-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            Bizim Oba
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">Komandamıza Qoşulun</p>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">CV-nizi bazaya əlavə edin</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="container mx-auto px-4 py-8 sm:py-16">
+        <div className="max-w-7xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-16 animate-fadeIn">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              {jobs.length} Aktiv İş Elanı
+            </div>
 
-        {/* Jobs List - Always show unless a job is selected */}
-        {!selectedJob && (
-          <div className="mb-6 bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-              Aktiv Vakansiyalar
-            </h2>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
+              Karyeranıza{' '}
+              <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                Başlayın
+              </span>
+            </h1>
 
-            {jobs.length > 0 ? (
-              <>
-                <div className="grid gap-4">
-                  {jobs.map((job) => (
-                    <div
-                      key={job.id}
-                      onClick={() => handleJobSelect(job)}
-                      className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 hover:shadow-lg cursor-pointer transition-all duration-300"
-                    >
-                      <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
-                        {job.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
-                          📍 {job.location}
-                        </span>
-                        {job.salary_min && job.salary_max && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">
-                            💰 {job.salary_min}-{job.salary_max} AZN
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                        {job.description}
-                      </p>
-                    </div>
-                  ))}
+            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 mb-4 max-w-3xl mx-auto">
+              Azərbaycanın ən böyük supermarket şəbəkəsində
+            </p>
+
+            <p className="text-lg text-gray-500 dark:text-gray-500 mb-8 max-w-2xl mx-auto">
+              1,610+ mağazada minlərlə iş imkanı • CV-nizi yükləyin və dərhal müraciət edin
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transform hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">1,610+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Mağaza Şəbəkəsi</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transform hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">{jobs.length}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Aktiv Vakansiya</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transform hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">24h</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Cavab Müddəti</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transform hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">5,000+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Əməkdaş</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Jobs List - Always show unless a job is selected */}
+          {!selectedJob && (
+            <div className="mb-6 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700 animate-slideUp">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200">
+                  💼 Açıq Vakansiyalar
+                </h2>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  {jobs.length} elan
                 </div>
-                <div className="mt-4 text-center">
+              </div>
+
+              {jobs.length > 0 ? (
+                <>
+                  <div className="grid gap-4 sm:gap-6">
+                    {jobs.map((job) => (
+                      <div
+                        key={job.id}
+                        onClick={() => handleJobSelect(job)}
+                        className="group p-6 border-2 border-gray-200 dark:border-gray-700 rounded-2xl hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-750"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                            {job.title}
+                          </h3>
+                          <svg className="w-6 h-6 text-gray-400 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                            📍 {job.location}
+                          </span>
+                          {job.salary_min && job.salary_max && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">
+                              💰 {job.salary_min}-{job.salary_max} AZN
+                            </span>
+                          )}
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200">
+                            ⏰ {job.employment_type === 'full_time' ? 'Tam ştat' : 'Yarım ştat'}
+                          </span>
+                        </div>
+
+                        <p className="text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                          {job.description}
+                        </p>
+
+                        <button className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-sm group-hover:gap-3 transition-all">
+                          Müraciət et
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-8 text-center">
+                    <button
+                      onClick={() => setSelectedJob({} as Job)}
+                      className="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors"
+                    >
+                      və ya ümumi müraciət göndərin →
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-16">
+                  <div className="text-8xl mb-6">💼</div>
+                  <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3">
+                    Hal-hazırda aktiv vakansiya yoxdur
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                    Lakin siz ümumi müraciət göndərə və CV-nizi bazamıza əlavə edə bilərsiniz
+                  </p>
                   <button
                     onClick={() => setSelectedJob({} as Job)}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl"
                   >
-                    və ya ümumi müraciət göndərin
+                    Ümumi Müraciət Göndər
                   </button>
                 </div>
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">💼</div>
-                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Hal-hazırda aktiv vakansiya yoxdur
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Lakin siz ümumi müraciət göndərə bilərsiniz
-                </p>
-                <button
-                  onClick={() => setSelectedJob({} as Job)}
-                  className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  Ümumi Müraciət Göndər
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
-        {/* Application Form */}
-        {selectedJob && (
-          <>
-            {selectedJob && selectedJob.id && (
-              <div className="mb-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-emerald-500">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
-                      {selectedJob.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {selectedJob.location}
-                    </p>
+          {/* Application Form */}
+          {selectedJob && (
+            <div className="max-w-4xl mx-auto">
+              {selectedJob && selectedJob.id && (
+                <div className="mb-6 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-2xl shadow-xl p-6 text-white">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="text-sm font-medium opacity-90 mb-1">Müraciət edirsiz</div>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {selectedJob.title}
+                      </h3>
+                      <p className="text-emerald-100 flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {selectedJob.location}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedJob(null)}
+                      className="text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setSelectedJob(null)}
-                    className="text-gray-500 hover:text-red-500"
-                  >
-                    ✕
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
 
-            <form className="w-full bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-10 border border-gray-100 dark:border-gray-700 animate-slideUp" onSubmit={handleSubmit}>
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="name">
-                    Ad
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="name" type="text" placeholder="Ayşə" value={formData.name} onChange={handleChange} required />
+              <form className="w-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border border-gray-100 dark:border-gray-700 animate-slideUp" onSubmit={handleSubmit}>
+                <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                  <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="name">
+                      Ad
+                    </label>
+                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="name" type="text" placeholder="Ayşə" value={formData.name} onChange={handleChange} required />
+                  </div>
+                  <div className="w-full md:w-1/2 px-2 sm:px-3">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="surname">
+                      Soyad
+                    </label>
+                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="surname" type="text" placeholder="Məmmədova" value={formData.surname} onChange={handleChange} required />
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 px-2 sm:px-3">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="surname">
-                    Soyad
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="surname" type="text" placeholder="Məmmədova" value={formData.surname} onChange={handleChange} required />
+                <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                  <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="phone">
+                      Telefon
+                    </label>
+                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="phone" type="tel" placeholder="+994 50 555 55 55" value={formData.phone} onChange={handleChange} required />
+                  </div>
+                  <div className="w-full md:w-1/2 px-2 sm:px-3">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="email">
+                      Email (İstəyə görə)
+                    </label>
+                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="email" type="email" placeholder="email@example.com" value={formData.email} onChange={handleChange} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="phone">
-                    Telefon
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="phone" type="tel" placeholder="+994 50 555 55 55" value={formData.phone} onChange={handleChange} required />
+                <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                  <div className="w-full px-2 sm:px-3">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="currentLivingPlace">
+                      Hazırki yaşayış yeri
+                    </label>
+                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="currentLivingPlace" type="text" placeholder="Bakı, Azərbaycan" value={formData.currentLivingPlace} onChange={handleChange} required />
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 px-2 sm:px-3">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="email">
-                    Email (İstəyə görə)
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="email" type="email" placeholder="email@example.com" value={formData.email} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                <div className="w-full px-2 sm:px-3">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="currentLivingPlace">
-                    Hazırki yaşayış yeri
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="currentLivingPlace" type="text" placeholder="Bakı, Azərbaycan" value={formData.currentLivingPlace} onChange={handleChange} required />
-                </div>
-              </div>
 
-              {!selectedJob?.id && (
-                <>
+                {!selectedJob?.id && (
+                  <>
+                    <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                      <div className="w-full px-2 sm:px-3">
+                        <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="placeToWork">
+                          İş yeri
+                        </label>
+                        <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 mb-3 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="placeToWork" type="text" placeholder="İşləmək istədiyiniz marketi seçin" value={formData.placeToWork} readOnly required />
+                        <button type="button" onClick={() => setShowMap(!showMap)} className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 transform active:scale-95 sm:hover:scale-105 shadow-md">
+                          {showMap ? '✕ Xəritəni Gizlət' : '📍 Xəritədən Seç'}
+                        </button>
+                      </div>
+                    </div>
+                    {showMap && (
+                      <div className="mb-4 sm:mb-6">
+                        <MapSelector onLocationSelect={handleLocationSelect} />
+                      </div>
+                    )}
+                    <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                      <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
+                        <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="jobTitle">
+                          Vəzifə
+                        </label>
+                        <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="jobTitle" type="text" placeholder="Kassir" value={formData.jobTitle} onChange={handleChange} required />
+                      </div>
+                      <div className="w-full md:w-1/2 px-2 sm:px-3">
+                        <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="expectedSalary">
+                          Gözlənilən maaş (AZN)
+                        </label>
+                        <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="expectedSalary" type="number" placeholder="500" value={formData.expectedSalary} onChange={handleChange} required />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {selectedJob?.id && (
                   <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
                     <div className="w-full px-2 sm:px-3">
-                      <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="placeToWork">
-                        İş yeri
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 mb-3 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="placeToWork" type="text" placeholder="İşləmək istədiyiniz marketi seçin" value={formData.placeToWork} readOnly required />
-                      <button type="button" onClick={() => setShowMap(!showMap)} className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 text-sm sm:text-base rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 transform active:scale-95 sm:hover:scale-105 shadow-md">
-                        {showMap ? '✕ Xəritəni Gizlət' : '📍 Xəritədən Seç'}
-                      </button>
-                    </div>
-                  </div>
-                  {showMap && (
-                    <div className="mb-4 sm:mb-6">
-                      <MapSelector onLocationSelect={handleLocationSelect} />
-                    </div>
-                  )}
-                  <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                    <div className="w-full md:w-1/2 px-2 sm:px-3 mb-4 sm:mb-6 md:mb-0">
-                      <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="jobTitle">
-                        Vəzifə
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="jobTitle" type="text" placeholder="Kassir" value={formData.jobTitle} onChange={handleChange} required />
-                    </div>
-                    <div className="w-full md:w-1/2 px-2 sm:px-3">
                       <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="expectedSalary">
                         Gözlənilən maaş (AZN)
                       </label>
                       <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="expectedSalary" type="number" placeholder="500" value={formData.expectedSalary} onChange={handleChange} required />
                     </div>
                   </div>
-                </>
-              )}
+                )}
 
-              {selectedJob?.id && (
                 <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
                   <div className="w-full px-2 sm:px-3">
-                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="expectedSalary">
-                      Gözlənilən maaş (AZN)
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="cv">
+                      CV Yüklə (PDF, DOC, DOCX - İstəyə görə)
                     </label>
-                    <input className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200" id="expectedSalary" type="number" placeholder="500" value={formData.expectedSalary} onChange={handleChange} required />
+                    <input
+                      className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200"
+                      id="cv"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleCvChange}
+                    />
+                    {cvFile && (
+                      <p className="mt-2 text-sm text-emerald-600 dark:text-emerald-400">
+                        ✓ {cvFile.name} seçildi
+                      </p>
+                    )}
                   </div>
                 </div>
-              )}
 
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                <div className="w-full px-2 sm:px-3">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="cv">
-                    CV Yüklə (PDF, DOC, DOCX - İstəyə görə)
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200"
-                    id="cv"
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleCvChange}
-                  />
-                  {cvFile && (
-                    <p className="mt-2 text-sm text-emerald-600 dark:text-emerald-400">
-                      ✓ {cvFile.name} seçildi
-                    </p>
-                  )}
+                <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
+                  <div className="w-full px-2 sm:px-3">
+                    <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="info">
+                      Əlavə məlumat
+                    </label>
+                    <textarea className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 min-h-[100px] sm:min-h-[120px] resize-y" id="info" placeholder="Özünüz haqqında, təcrübəniz və niyə komandamıza qoşulmaq istədiyiniz barədə bizə məlumat verin..." value={formData.info} onChange={handleChange}></textarea>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mb-4 sm:mb-6">
-                <div className="w-full px-2 sm:px-3">
-                  <label className="block tracking-wide text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-bold mb-2" htmlFor="info">
-                    Əlavə məlumat
-                  </label>
-                  <textarea className="appearance-none block w-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base leading-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 min-h-[100px] sm:min-h-[120px] resize-y" id="info" placeholder="Özünüz haqqında, təcrübəniz və niyə komandamıza qoşulmaq istədiyiniz barədə bizə məlumat verin..." value={formData.info} onChange={handleChange}></textarea>
+                <div className="flex flex-wrap -mx-2 sm:-mx-3 mt-6 sm:mt-8">
+                  <div className="w-full px-2 sm:px-3">
+                    <button
+                      className="w-full bg-gradient-to-r from-emerald-500 via-teal-600 to-blue-600 hover:from-emerald-600 hover:via-teal-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 sm:py-5 px-6 sm:px-8 text-base sm:text-lg rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300 transform active:scale-95 sm:hover:scale-[1.02] shadow-xl hover:shadow-2xl disabled:scale-100"
+                      type="submit"
+                      disabled={uploading || submitting}
+                    >
+                      {uploading ? 'CV yüklənir...' : submitting ? 'Göndərilir...' : 'Müraciəti Göndər'}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-wrap -mx-2 sm:-mx-3 mt-6 sm:mt-8">
-                <div className="w-full px-2 sm:px-3">
-                  <button
-                    className="w-full bg-gradient-to-r from-emerald-500 via-teal-600 to-blue-600 hover:from-emerald-600 hover:via-teal-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 text-sm sm:text-base rounded-lg sm:rounded-xl focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300 transform active:scale-95 sm:hover:scale-[1.02] shadow-xl hover:shadow-2xl disabled:scale-100"
-                    type="submit"
-                    disabled={uploading || submitting}
-                  >
-                    {uploading ? 'CV yüklənir...' : submitting ? 'Göndərilir...' : 'Müraciəti Göndər'}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </>
-        )}
+              </form>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Success Popup */}
@@ -421,6 +490,6 @@ export default function Home() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   )
 }
