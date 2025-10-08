@@ -37,6 +37,7 @@ export default function Home() {
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => {
     fetchJobs()
@@ -120,7 +121,29 @@ export default function Home() {
       console.log(data)
 
       if (response.ok) {
-        window.location.href = 'https://oba.az/'
+        // Show success popup
+        setShowSuccess(true)
+
+        // Reset form
+        setFormData({
+          name: '',
+          surname: '',
+          phone: '',
+          email: '',
+          currentLivingPlace: '',
+          placeToWork: '',
+          jobTitle: '',
+          expectedSalary: '',
+          info: '',
+        })
+        setCvFile(null)
+
+        // After 3 seconds, hide popup and redirect to homepage
+        setTimeout(() => {
+          setShowSuccess(false)
+          setSelectedJob(null)
+          fetchJobs() // Refresh jobs list
+        }, 3000)
       } else {
         alert('Müraciət göndərilmədi. Zəhmət olmasa yenidən cəhd edin.')
       }
@@ -141,53 +164,75 @@ export default function Home() {
             Bizim Oba
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">Komandamıza Qoşulun</p>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">CV-nizi bazaya əlavə edin</p>
         </div>
 
-        {/* Jobs List */}
-        {jobs.length > 0 && !selectedJob && (
+        {/* Jobs List - Always show unless a job is selected */}
+        {!selectedJob && (
           <div className="mb-6 bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border border-gray-100 dark:border-gray-700">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
               Aktiv Vakansiyalar
             </h2>
-            <div className="grid gap-4">
-              {jobs.map((job) => (
-                <div
-                  key={job.id}
-                  onClick={() => handleJobSelect(job)}
-                  className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 hover:shadow-lg cursor-pointer transition-all duration-300"
-                >
-                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
-                    {job.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
-                      📍 {job.location}
-                    </span>
-                    {job.salary_min && job.salary_max && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">
-                        💰 {job.salary_min}-{job.salary_max} AZN
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                    {job.description}
-                  </p>
+
+            {jobs.length > 0 ? (
+              <>
+                <div className="grid gap-4">
+                  {jobs.map((job) => (
+                    <div
+                      key={job.id}
+                      onClick={() => handleJobSelect(job)}
+                      className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 hover:shadow-lg cursor-pointer transition-all duration-300"
+                    >
+                      <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
+                        {job.title}
+                      </h3>
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                          📍 {job.location}
+                        </span>
+                        {job.salary_min && job.salary_max && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">
+                            💰 {job.salary_min}-{job.salary_max} AZN
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                        {job.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="mt-4 text-center">
-              <button
-                onClick={() => setSelectedJob({} as Job)}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
-              >
-                və ya ümumi müraciət göndərin
-              </button>
-            </div>
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={() => setSelectedJob({} as Job)}
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                  >
+                    və ya ümumi müraciət göndərin
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">💼</div>
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Hal-hazırda aktiv vakansiya yoxdur
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Lakin siz ümumi müraciət göndərə bilərsiniz
+                </p>
+                <button
+                  onClick={() => setSelectedJob({} as Job)}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  Ümumi Müraciət Göndər
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* Application Form */}
-        {(selectedJob || jobs.length === 0) && (
+        {selectedJob && (
           <>
             {selectedJob && selectedJob.id && (
               <div className="mb-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-emerald-500">
@@ -337,6 +382,45 @@ export default function Home() {
           </>
         )}
       </div>
+
+      {/* Success Popup */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fadeIn">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full transform animate-slideUp">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mb-4">
+                <svg
+                  className="h-10 w-10 sm:h-12 sm:w-12 text-emerald-600 dark:text-emerald-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                Təbriklər!
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-2">
+                Müraciətiniz uğurla göndərildi
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500">
+                Tezliklə sizinlə əlaqə saxlayacağıq
+              </p>
+              <div className="mt-6">
+                <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-600 animate-progress"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
