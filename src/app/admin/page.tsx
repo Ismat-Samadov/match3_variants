@@ -248,74 +248,95 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
-              <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
-                <span className="inline-flex items-center px-2 py-1 rounded-md bg-orange-100 text-orange-800 text-xs font-medium">
-                  {applications.length} müraciət
-                </span>
-              </p>
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top Bar */}
+          <div className="flex items-center justify-between py-4 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+                <p className="text-xs text-gray-500">İdarəetmə paneli</p>
+              </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <button
                 onClick={exportToExcel}
                 disabled={filteredApplications.length === 0}
-                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 disabled:bg-gray-100 border border-gray-300 text-gray-700 disabled:text-gray-400 font-medium py-2.5 px-4 rounded-lg transition-all disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 disabled:bg-gray-100 border border-gray-300 text-gray-700 disabled:text-gray-400 font-medium py-2 px-3 rounded-lg transition-all disabled:cursor-not-allowed"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Export
+                <span className="hidden sm:inline">Export</span>
               </button>
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center gap-2 bg-white hover:bg-red-50 border border-gray-300 hover:border-red-300 text-gray-700 hover:text-red-600 font-medium py-2.5 px-4 rounded-lg transition-all"
+                className="inline-flex items-center gap-2 bg-white hover:bg-red-50 border border-gray-300 hover:border-red-300 text-gray-700 hover:text-red-600 font-medium py-2 px-3 rounded-lg transition-all"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                Çıxış
+                <span className="hidden sm:inline">Çıxış</span>
               </button>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-1 mt-6 bg-gray-100 p-1 rounded-lg w-fit">
-            <button
-              onClick={() => setActiveTab('applications')}
-              className={`px-4 py-2 rounded-md font-medium transition-all ${
-                activeTab === 'applications'
-                  ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Müraciətlər
-            </button>
-            <button
-              onClick={() => setActiveTab('analytics')}
-              className={`px-4 py-2 rounded-md font-medium transition-all ${
-                activeTab === 'analytics'
-                  ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Analitika
-            </button>
-            <button
-              onClick={() => window.location.href = '/admin/jobs'}
-              className="px-4 py-2 rounded-md font-medium text-gray-600 hover:text-gray-900 transition-all"
-            >
-              Vakansiyalar
-            </button>
-            <button
-              onClick={() => window.location.href = '/'}
-              className="px-4 py-2 rounded-md font-medium text-gray-600 hover:text-gray-900 transition-all"
-            >
-              Ana Səhifə
-            </button>
+          {/* Navigation Tabs */}
+          <div className="flex items-center justify-between py-3">
+            <nav className="flex space-x-1">
+              <button
+                onClick={() => setActiveTab('applications')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'applications'
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Müraciətlər
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-600 text-white">
+                  {applications.length}
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab('analytics')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'analytics'
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Analitika
+              </button>
+              <button
+                onClick={() => window.location.href = '/admin/jobs'}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Vakansiyalar
+              </button>
+              <button
+                onClick={() => window.location.href = '/'}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Ana Səhifə
+              </button>
+            </nav>
           </div>
         </div>
       </header>
