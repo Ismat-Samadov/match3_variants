@@ -1,6 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
+
+// Lazy load the map component to avoid SSR issues with Leaflet
+const LocationMap = lazy(() => import('@/components/LocationMap'))
 
 interface Job {
   id: number
@@ -620,41 +623,55 @@ export default function Home() {
                     ))}
                   </select>
                 ) : (
-                  <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50">
-                    <div className="mb-3">
-                      <p className="text-sm font-medium text-gray-700 mb-2">Xəritədən filial seçin:</p>
-                      {formData.placeToWork && (
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-800 rounded-lg text-sm font-medium">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          {formData.placeToWork}
-                        </div>
-                      )}
-                    </div>
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 max-h-64 overflow-y-auto">
-                      {branchLocations.map((location) => (
+                  <div className="space-y-4">
+                    {formData.placeToWork && (
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg text-sm font-semibold shadow-md">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Seçilmiş: {formData.placeToWork}
                         <button
-                          key={location}
                           type="button"
-                          onClick={() => setFormData({ ...formData, placeToWork: location })}
-                          className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${
-                            formData.placeToWork === location
-                              ? 'bg-orange-500 text-white shadow-md'
-                              : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
-                          }`}
+                          onClick={() => setFormData({ ...formData, placeToWork: '' })}
+                          className="ml-2 hover:bg-white/20 rounded-full p-1 transition-colors"
                         >
-                          {location}
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
                         </button>
-                      ))}
+                      </div>
+                    )}
+
+                    <Suspense fallback={
+                      <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent"></div>
+                          <p className="mt-4 text-gray-600">Xəritə yüklənir...</p>
+                        </div>
+                      </div>
+                    }>
+                      <LocationMap
+                        selectedLocation={formData.placeToWork}
+                        onLocationSelect={(locationName) => setFormData({ ...formData, placeToWork: locationName })}
+                      />
+                    </Suspense>
+
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div className="text-sm text-blue-800">
+                          <p className="font-semibold mb-1">İstifadə qaydaları:</p>
+                          <ul className="list-disc list-inside space-y-1 text-blue-700">
+                            <li>Xəritədəki narıncı işarələrə klikləyərək filial seçin</li>
+                            <li>Zoom etmək üçün + / - düymələrindən istifadə edin</li>
+                            <li>Xəritəni hərəkət etdirmək üçün sürüşdürün</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, placeToWork: '' })}
-                      className="mt-3 text-sm text-gray-600 hover:text-gray-800 underline"
-                    >
-                      Seçimi təmizlə
-                    </button>
                   </div>
                 )}
 
