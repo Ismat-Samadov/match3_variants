@@ -145,30 +145,32 @@ export default function JobsManagementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-            <div className="flex justify-between items-center">
+        <div className="mb-8">
+          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
                   Vakansiya İdarəetməsi
                 </h1>
-                <p className="text-gray-600">
-                  Ümumi Vakansiyalar: <span className="font-bold text-orange-600">{jobs.length}</span>
+                <p className="text-gray-600 flex items-center gap-2">
+                  <span className="inline-flex items-center px-2 py-1 rounded-md bg-orange-100 text-orange-800 text-xs font-medium">
+                    {jobs.length} vakansiya
+                  </span>
                 </p>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowForm(!showForm)}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2.5 px-5 rounded-lg transition-all shadow-md hover:shadow-lg"
                 >
                   {showForm ? '✕ Bağla' : '➕ Yeni Vakansiya'}
                 </button>
                 <button
                   onClick={() => window.location.href = '/admin'}
-                  className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 shadow-lg"
+                  className="bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-all"
                 >
                   ← Geri
                 </button>
@@ -179,10 +181,17 @@ export default function JobsManagementPage() {
 
         {/* Job Form */}
         {showForm && (
-          <div className="mb-6 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              {editingJob ? 'Vakansiyani Redaktə Et' : 'Yeni Vakansiya Əlavə Et'}
-            </h2>
+          <div className="mb-8 bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {editingJob ? 'Vakansiyani Redaktə Et' : 'Yeni Vakansiya Əlavə Et'}
+              </h2>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -311,17 +320,17 @@ export default function JobsManagementPage() {
                 />
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 pt-4 border-t border-gray-200">
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all shadow-md hover:shadow-lg"
                 >
-                  {editingJob ? 'Yadda Saxla' : 'Əlavə Et'}
+                  {editingJob ? '✓ Yadda Saxla' : '➕ Əlavə Et'}
                 </button>
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg"
+                  className="bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-medium py-2.5 px-6 rounded-lg transition-all"
                 >
                   Ləğv Et
                 </button>
@@ -335,49 +344,58 @@ export default function JobsManagementPage() {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow"
+              className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md transition-all"
             >
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-col lg:flex-row justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {job.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
-                      📍 {job.location}
-                    </span>
-                    {job.salary_min && job.salary_max && (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-orange-100 text-orange-800">
-                        💰 {job.salary_min}-{job.salary_max} AZN
-                      </span>
-                    )}
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${
-                      job.status === 'active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {job.status === 'active' ? '✓ Aktiv' : job.status === 'closed' ? '✕ Bağlı' : '📝 Qaralama'}
-                    </span>
-                    {job._count && (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-purple-100 text-purple-800">
-                        👥 {job._count.applications} müraciət
-                      </span>
-                    )}
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {job.title}
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                          📍 {job.location}
+                        </span>
+                        {job.salary_min && job.salary_max && (
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-orange-100 text-orange-800">
+                            💰 {job.salary_min}-{job.salary_max} AZN
+                          </span>
+                        )}
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${
+                          job.status === 'active'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          {job.status === 'active' ? '✓ Aktiv' : job.status === 'closed' ? '✕ Bağlı' : '📝 Qaralama'}
+                        </span>
+                        {job._count && (
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-purple-100 text-purple-800">
+                            👥 {job._count.applications} müraciət
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-gray-600 text-sm line-clamp-2">
+                  <p className="text-gray-600 text-sm line-clamp-2 ml-15">
                     {job.description}
                   </p>
                 </div>
-                <div className="flex gap-2 ml-4">
+                <div className="flex gap-2 ml-auto">
                   <button
                     onClick={() => handleEdit(job)}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 shadow-lg"
+                    className="bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg transition-all"
                   >
                     ✏️ Redaktə
                   </button>
                   <button
                     onClick={() => handleDelete(job.id)}
-                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 shadow-lg"
+                    className="bg-red-50 hover:bg-red-100 text-red-700 font-medium py-2 px-4 rounded-lg transition-all"
                   >
                     🗑️ Sil
                   </button>
@@ -387,15 +405,28 @@ export default function JobsManagementPage() {
           ))}
         </div>
 
-        {jobs.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-gray-200">
-            <div className="text-6xl mb-4">💼</div>
+        {jobs.length === 0 && !showForm && (
+          <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-200">
+            <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               Hələ vakansiya yoxdur
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 mb-6">
               Yeni vakansiya əlavə etmək üçün yuxarıdakı düyməni klikləyin
             </p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2.5 px-5 rounded-lg transition-all shadow-md hover:shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Yeni Vakansiya Əlavə Et
+            </button>
           </div>
         )}
       </div>

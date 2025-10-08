@@ -246,33 +246,35 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
-              <p className="text-sm text-gray-600">
-                {applications.length} ümumi müraciət
+              <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+              <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                <span className="inline-flex items-center px-2 py-1 rounded-md bg-orange-100 text-orange-800 text-xs font-medium">
+                  {applications.length} müraciət
+                </span>
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <button
                 onClick={exportToExcel}
                 disabled={filteredApplications.length === 0}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:cursor-not-allowed shadow-lg"
+                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 disabled:bg-gray-100 border border-gray-300 text-gray-700 disabled:text-gray-400 font-medium py-2.5 px-4 rounded-lg transition-all disabled:cursor-not-allowed"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Export
               </button>
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 bg-white hover:bg-red-50 border border-gray-300 hover:border-red-300 text-gray-700 hover:text-red-600 font-medium py-2.5 px-4 rounded-lg transition-all"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
                 Çıxış
@@ -281,36 +283,36 @@ export default function AdminPage() {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-4 mt-6 border-b border-gray-200">
+          <div className="flex gap-1 mt-6 bg-gray-100 p-1 rounded-lg w-fit">
             <button
               onClick={() => setActiveTab('applications')}
-              className={`pb-3 px-1 font-medium transition-colors border-b-2 ${
+              className={`px-4 py-2 rounded-md font-medium transition-all ${
                 activeTab === 'applications'
-                  ? 'border-orange-600 text-orange-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'bg-white text-orange-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               Müraciətlər
             </button>
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`pb-3 px-1 font-medium transition-colors border-b-2 ${
+              className={`px-4 py-2 rounded-md font-medium transition-all ${
                 activeTab === 'analytics'
-                  ? 'border-orange-600 text-orange-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'bg-white text-orange-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               Analitika
             </button>
             <button
               onClick={() => window.location.href = '/admin/jobs'}
-              className="pb-3 px-1 font-medium transition-colors border-b-2 border-transparent text-gray-600 hover:text-gray-900"
+              className="px-4 py-2 rounded-md font-medium text-gray-600 hover:text-gray-900 transition-all"
             >
               Vakansiyalar
             </button>
             <button
               onClick={() => window.location.href = '/'}
-              className="pb-3 px-1 font-medium transition-colors border-b-2 border-transparent text-gray-600 hover:text-gray-900"
+              className="px-4 py-2 rounded-md font-medium text-gray-600 hover:text-gray-900 transition-all"
             >
               Ana Səhifə
             </button>
@@ -323,19 +325,32 @@ export default function AdminPage() {
           <>
             {/* Filters */}
             <div className="mb-6">
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                  Filtrlər
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Axtar
                     </label>
-                    <input
-                      type="text"
-                      placeholder="Ad, telefon və ya vəzifə..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    />
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Ad, telefon və ya vəzifə..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -345,7 +360,7 @@ export default function AdminPage() {
                     <select
                       value={filterLocation}
                       onChange={(e) => setFilterLocation(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
                     >
                       <option value="">Bütün məkanlar</option>
                       {uniqueLocations.map((location) => (
@@ -360,7 +375,7 @@ export default function AdminPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
               {filteredApplications.length === 0 ? (
                 <div className="text-center py-12">
                   <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -377,52 +392,63 @@ export default function AdminPage() {
                 <>
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead className="bg-gray-50 border-b border-gray-200">
+                      <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Ad Soyad
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Əlaqə
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Vəzifə
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Maaş
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             CV
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-200">
+                      <tbody className="divide-y divide-gray-100">
                         {currentApplications.map((app) => (
-                          <tr key={app.id} className="hover:bg-gray-50 transition-colors">
+                          <tr key={app.id} className="hover:bg-orange-50 transition-colors">
                             <td className="px-6 py-4">
-                              <div className="font-medium text-gray-900">
-                                {app.name} {app.surname}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {app.current_living_place}
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-semibold">
+                                  {app.name.charAt(0)}{app.surname.charAt(0)}
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900">
+                                    {app.name} {app.surname}
+                                  </div>
+                                  <div className="text-sm text-gray-500">
+                                    {app.current_living_place}
+                                  </div>
+                                </div>
                               </div>
                             </td>
                             <td className="px-6 py-4">
                               <div className="text-sm text-gray-900">{app.phone}</div>
-                              <div className="text-sm text-gray-600">
+                              <div className="text-sm text-gray-500">
                                 {app.email || '-'}
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                {app.job?.title || 'Ümumi'}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {app.place_to_work}
+                              <div className="flex flex-col gap-1">
+                                <span className="inline-flex w-fit items-center px-2 py-1 rounded-md bg-blue-100 text-blue-800 text-xs font-medium">
+                                  {app.job?.title || 'Ümumi'}
+                                </span>
+                                <div className="text-sm text-gray-500">
+                                  {app.place_to_work}
+                                </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                              {app.expected_salary} AZN
+                            <td className="px-6 py-4">
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-green-100 text-green-800 text-sm font-medium">
+                                {app.expected_salary} AZN
+                              </span>
                             </td>
                             <td className="px-6 py-4">
                               {app.cv_url ? (
@@ -430,7 +456,7 @@ export default function AdminPage() {
                                   href={app.cv_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-medium text-sm transition-colors"
                                 >
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -481,37 +507,82 @@ export default function AdminPage() {
           /* Analytics Tab */
           <div className="space-y-6">
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-orange-50 rounded-lg border border-orange-200 p-6">
-                <div className="text-sm text-gray-600 mb-1">Ümumi</div>
-                <div className="text-3xl font-bold text-orange-600">{applications.length}</div>
-              </div>
-              <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
-                <div className="text-sm text-gray-600 mb-1">Orta Maaş</div>
-                <div className="text-3xl font-bold text-blue-600">
-                  {Math.round(applications.reduce((sum, app) => sum + app.expected_salary, 0) / applications.length || 0)} AZN
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Ümumi Müraciət</div>
+                    <div className="text-3xl font-bold text-gray-900">{applications.length}</div>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
-              <div className="bg-purple-50 rounded-lg border border-purple-200 p-6">
-                <div className="text-sm text-gray-600 mb-1">Məkanlar</div>
-                <div className="text-3xl font-bold text-purple-600">
-                  {new Set(applications.map(app => app.place_to_work)).size}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Orta Maaş</div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {Math.round(applications.reduce((sum, app) => sum + app.expected_salary, 0) / applications.length || 0)}
+                      <span className="text-lg text-gray-600 ml-1">AZN</span>
+                    </div>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
-              <div className="bg-green-50 rounded-lg border border-green-200 p-6">
-                <div className="text-sm text-gray-600 mb-1">Vəzifələr</div>
-                <div className="text-3xl font-bold text-green-600">
-                  {new Set(applications.map(app => app.job?.title || 'Ümumi')).size}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Məkanlar</div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {new Set(applications.map(app => app.place_to_work)).size}
+                    </div>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Vəzifələr</div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {new Set(applications.map(app => app.job?.title || 'Ümumi')).size}
+                    </div>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Vəzifələrə görə
-                </h3>
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Vəzifələrə görə
+                  </h3>
+                </div>
                 <div className="space-y-3">
                   {Object.entries(
                     applications.reduce((acc, app) => {
@@ -543,10 +614,18 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Məkanlara görə (Top 10)
-                </h3>
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Məkanlara görə (Top 10)
+                  </h3>
+                </div>
                 <div className="space-y-3">
                   {Object.entries(
                     applications.reduce((acc, app) => {
