@@ -24,9 +24,48 @@ export default function Home() {
     phone: '',
     email: '',
     currentLivingPlace: '',
+    placeToWork: '',
     expectedSalary: '',
     info: '',
   })
+
+  // Azerbaijan branch locations
+  const branchLocations = [
+    'Bakı',
+    'Sumqayıt',
+    'Gəncə',
+    'Mingəçevir',
+    'Şirvan',
+    'Naxçıvan',
+    'Lənkəran',
+    'Şəki',
+    'Yevlax',
+    'Ağdam',
+    'Füzuli',
+    'Qəbələ',
+    'Quba',
+    'Xaçmaz',
+    'Şamaxı',
+    'Salyan',
+    'Ağcabədi',
+    'Bərdə',
+    'Zaqatala',
+    'Qax',
+    'Balakən',
+    'Qusar',
+    'İsmayıllı',
+    'Ağsu',
+    'Göyçay',
+    'Ucar',
+    'Kürdəmir',
+    'Sabirabad',
+    'Biləsuvar',
+    'Cəlilabad',
+    'Masallı',
+    'Astara',
+    'Lerik',
+    'Yardımlı',
+  ]
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -83,7 +122,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value })
   }
 
@@ -127,7 +166,7 @@ export default function Home() {
         body: JSON.stringify({
           ...formData,
           jobId: selectedJob?.id,
-          placeToWork: selectedJob?.location || '',
+          placeToWork: formData.placeToWork || selectedJob?.location || '',
           cvUrl,
         }),
       })
@@ -140,6 +179,7 @@ export default function Home() {
           phone: '',
           email: '',
           currentLivingPlace: '',
+          placeToWork: '',
           expectedSalary: '',
           info: '',
         })
@@ -408,6 +448,28 @@ export default function Home() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
                   placeholder="Bakı, Azərbaycan"
                 />
+              </div>
+
+              <div>
+                <label htmlFor="placeToWork" className="block text-sm font-medium text-gray-700 mb-2">
+                  İşləmək istədiyiniz filial
+                </label>
+                <select
+                  id="placeToWork"
+                  value={formData.placeToWork}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                >
+                  <option value="">Seçin (ixtiyari)</option>
+                  {branchLocations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-sm text-gray-500">
+                  Seçməsəniz, vakansiya yerləşdiyi filialda qəbul ediləcəksiniz
+                </p>
               </div>
 
               <div>
