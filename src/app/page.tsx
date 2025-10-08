@@ -70,6 +70,7 @@ export default function Home() {
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showMapView, setShowMapView] = useState(false)
 
   useEffect(() => {
     fetchJobs()
@@ -577,23 +578,87 @@ export default function Home() {
               </div>
 
               <div>
-                <label htmlFor="placeToWork" className="block text-sm font-medium text-gray-700 mb-2">
-                  İşləmək istədiyiniz filial
-                </label>
-                <select
-                  id="placeToWork"
-                  value={formData.placeToWork}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
-                >
-                  <option value="">Seçin (ixtiyari)</option>
-                  {branchLocations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-                <p className="mt-1 text-sm text-gray-500">
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="placeToWork" className="block text-sm font-medium text-gray-700">
+                    İşləmək istədiyiniz filial
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowMapView(!showMapView)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
+                  >
+                    {showMapView ? (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        Siyahı
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                        </svg>
+                        Xəritə
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {!showMapView ? (
+                  <select
+                    id="placeToWork"
+                    value={formData.placeToWork}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                  >
+                    <option value="">Seçin (ixtiyari)</option>
+                    {branchLocations.map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <div className="mb-3">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Xəritədən filial seçin:</p>
+                      {formData.placeToWork && (
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-800 rounded-lg text-sm font-medium">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          {formData.placeToWork}
+                        </div>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 max-h-64 overflow-y-auto">
+                      {branchLocations.map((location) => (
+                        <button
+                          key={location}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, placeToWork: location })}
+                          className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${
+                            formData.placeToWork === location
+                              ? 'bg-orange-500 text-white shadow-md'
+                              : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200'
+                          }`}
+                        >
+                          {location}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, placeToWork: '' })}
+                      className="mt-3 text-sm text-gray-600 hover:text-gray-800 underline"
+                    >
+                      Seçimi təmizlə
+                    </button>
+                  </div>
+                )}
+
+                <p className="mt-2 text-sm text-gray-500">
                   Seçməsəniz, vakansiya yerləşdiyi filialda qəbul ediləcəksiniz
                 </p>
               </div>
