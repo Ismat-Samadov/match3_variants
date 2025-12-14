@@ -1,7 +1,9 @@
 'use client';
 
-import GameBoard from '@/components/GameBoard';
-import Leaderboard from '@/components/Leaderboard';
+import dynamic from 'next/dynamic';
+
+const GameBoard = dynamic(() => import('@/components/GameBoard'), { ssr: false });
+const Leaderboard = dynamic(() => import('@/components/Leaderboard'), { ssr: false });
 
 export default function Home() {
   return (
