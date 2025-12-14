@@ -51,12 +51,12 @@ function wouldCreateMatch(
   let horizontalCount = 1;
 
   // Check left
-  for (let c = col - 1; c >= 0 && gems[row][c]?.type === type; c--) {
+  for (let c = col - 1; c >= 0 && gems[row]?.[c]?.type === type; c--) {
     horizontalCount++;
   }
 
   // Check right
-  for (let c = col + 1; c < size && gems[row][c]?.type === type; c++) {
+  for (let c = col + 1; c < size && gems[row]?.[c]?.type === type; c++) {
     horizontalCount++;
   }
 
@@ -66,12 +66,12 @@ function wouldCreateMatch(
   let verticalCount = 1;
 
   // Check up
-  for (let r = row - 1; r >= 0 && gems[r][col]?.type === type; r--) {
+  for (let r = row - 1; r >= 0 && gems[r]?.[col]?.type === type; r--) {
     verticalCount++;
   }
 
   // Check down
-  for (let r = row + 1; r < size && gems[r][col]?.type === type; r++) {
+  for (let r = row + 1; r < size && gems[r]?.[col]?.type === type; r++) {
     verticalCount++;
   }
 
